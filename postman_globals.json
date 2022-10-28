@@ -1,0 +1,15 @@
+{
+	"id": "49fe12ad-51ac-41b0-86f8-af5f6628d8d5",
+	"values": [
+		{
+			"key": "DOMAIN",
+			"value": "onetrust.com",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2022-10-28T09:50:35.448Z",
+	"_postman_exported_using": "Postman/10.0.39"
+}

@@ -1,0 +1,87 @@
+{
+	"info": {
+		"_postman_id": "d4c7c13d-1ce8-4607-8ae9-10863cef979b",
+		"name": "Validating HTTP Codes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12841922"
+	},
+	"item": [
+		{
+			"name": "Test GEO Location",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Http status is 200\", function () {\r",
+							"   pm.expect(pm.response.code).to.eq(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Http status is 200\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{SUBDOMAIN}}.{{DOMAIN}}/cookieconsentpub/v1/geo/location",
+					"protocol": "https",
+					"host": [
+						"{{SUBDOMAIN}}",
+						"{{DOMAIN}}"
+					],
+					"path": [
+						"cookieconsentpub",
+						"v1",
+						"geo",
+						"location"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test BAD Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//deliberately making this test fail\r",
+							"pm.test(\"Http status is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Http status is 400\", function () {\r",
+							"   pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.google.com/log",
+					"protocol": "https",
+					"host": [
+						"www",
+						"google",
+						"com"
+					],
+					"path": [
+						"log"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
