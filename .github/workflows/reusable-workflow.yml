@@ -1,0 +1,33 @@
+name: Postman-CLI
+run-name: Started the resusable-workflow Postman-CLI
+on:
+  workflow_call:
+    secrets:
+      postman_api_key:
+        required: true
+
+jobs:
+  postman_cli_install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Postman CLI
+        id: step1
+        run: |
+          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+          echo "🤖 Verifying Postman CLI install.."
+
+      - name: Verify Postman CLI install
+        id: step2
+        run: |
+          postman -v
+          echo "💯 Postman CLI installed."
+
+  postman_cli_login:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Postman CLI Login
+        id: step4
+        run: |
+          postman login --with-api-key ${{ secrets.postman_api_key }}
+        
+      - run: echo "✔️ Action complete"

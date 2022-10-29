@@ -22,25 +22,14 @@ jobs:
         id: step1
         uses: actions/checkout@v3
 
-      - name: Install Postman CLI
+      - name: Install and Verify Postman CLI
         id: step2
-        run: |
-          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-          echo "🤖 Verifying Postman CLI install.."
+        uses: far11ven/postman-cli-with-github-actions/.github/workflows/reusable-workflow.yml@main
+        with:
+          postman_api_key: ${{ inputs.postman_api_key }}
 
-      - name: Verify Postman CLI install
-        id: step3
-        run: |
-          postman -v
-          echo "💯 Postman CLI installed."
-
-      - name: Postman CLI Login
-        id: step4
-        run: |
-          postman login --with-api-key PMAK-635adf435c78e7380cbf9ab3-a9d00a70784f08415cb7e4870bf0caff3c
-        
       - name: Run Test Collections
-        id: step5
+        id: step3
         env:
           DOMAIN: ${{ inputs.domain }}
           SUBDOMAIN: ${{ inputs.subdomain }}s
