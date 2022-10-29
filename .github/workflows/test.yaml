@@ -1,4 +1,4 @@
-name: run-on-ubuntu
+name: Testing reusable workflow
 run-name: ${{ github.actor }} started the action 🚀
 on:
   workflow_dispatch:
@@ -11,8 +11,17 @@ on:
         required: true
         type: string
         description: 'The url against which test to be run'
+      postman_api_key:
+        required: true
+        type: string
+        description: 'api-key'
       
 jobs:
+  install_postman_cli: 
+        uses: far11ven/postman-cli-with-github-actions/.github/workflows/reusable-workflow.yml@main
+        with:
+          postman_api_key: ${{ inputs.postman_api_key }}
+
   run-tests:
     runs-on: ubuntu-latest
     outputs:
@@ -22,23 +31,8 @@ jobs:
         id: step1
         uses: actions/checkout@v3
 
-      - name: Install Postman CLI
-        id: step2
-        run: |
-          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-          echo "🤖 Verifying Postman CLI install.."
-      - name: Verify Postman CLI install
-        id: step3
-        run: |
-          postman -v
-          echo "💯 Postman CLI installed."
-      - name: Postman CLI Login
-        id: step4
-        run: |
-          postman login --with-api-key PMAK-635adf435c78e7380cbf9ab3-a9d00a70784f08415cb7e4870bf0caff3c
-        
       - name: Run Test Collections
-        id: step5
+        id: step2
         env:
           DOMAIN: ${{ inputs.domain }}
           SUBDOMAIN: ${{ inputs.subdomain }}s
@@ -46,4 +40,5 @@ jobs:
             echo $DOMAIN
             echo $SUBDOMAIN
             postman collection run postman_collection.json -g postman_globals.json -e env/QA/postman_environment.json
+
       - run: echo "✔️ All tests were run with status ${{ job.status }}."
