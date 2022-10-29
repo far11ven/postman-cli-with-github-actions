@@ -13,6 +13,11 @@ on:
         description: 'The url against which test to be run'
       
 jobs:
+  install_postman_cli: 
+        uses: far11ven/postman-cli-with-github-actions/.github/workflows/reusable-workflow.yml@main
+        with:
+          postman_api_key: ${{ inputs.postman_api_key }}
+
   run-tests:
     runs-on: ubuntu-latest
     outputs:
@@ -22,14 +27,8 @@ jobs:
         id: step1
         uses: actions/checkout@v3
 
-      - name: Install and Verify Postman CLI
-        id: step2
-        uses: far11ven/postman-cli-with-github-actions/.github/workflows/reusable-workflow.yml@main
-        with:
-          postman_api_key: ${{ inputs.postman_api_key }}
-
       - name: Run Test Collections
-        id: step3
+        id: step2
         env:
           DOMAIN: ${{ inputs.domain }}
           SUBDOMAIN: ${{ inputs.subdomain }}s
