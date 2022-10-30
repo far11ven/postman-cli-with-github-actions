@@ -11,13 +11,12 @@ on:
         required: true
         type: string
         description: 'The url against which test to be run'
+    secrets:
+      postman_api_key:
+        required: true   
+        description: 'The token is pulled from GitHub repository secrets'
 
-jobs:
-  install-postman-cli-with-reusable-workflow: 
-        uses: far11ven/postman-cli-with-github-actions/.github/workflows/reusable-workflow.yml@main
-        secrets:
-          postman-api-key: ${{ secrets.postman_api_key }}
-
+jobs:     
   run-tests:
     runs-on: ubuntu-latest
     outputs:
@@ -27,8 +26,14 @@ jobs:
         id: step1
         uses: actions/checkout@v3
 
-      - name: Run Test Collections
+      - name: Install Postman CLI
         id: step2
+        uses: far11ven/postman-cli-with-github-actions/.github/workflows/reusable-workflow.yml@main
+        with:
+            postman-api-key: ${{ secrets.postman_api_key }}
+
+      - name: Run Test Collections
+        id: step3
         env:
           DOMAIN: ${{ inputs.domain }}
           SUBDOMAIN: ${{ inputs.subdomain }}s
