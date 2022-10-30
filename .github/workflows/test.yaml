@@ -11,16 +11,12 @@ on:
         required: true
         type: string
         description: 'The url against which test to be run'
-      postman_api_key:
-        required: true
-        type: string
-        description: 'api-key'
-      
+
 jobs:
   install_postman_cli: 
         uses: far11ven/postman-cli-with-github-actions/.github/workflows/reusable-workflow.yml@main
         with:
-          postman_api_key: ${{ inputs.postman_api_key }}
+          postman_api_key: ${{ secrets.postman_api_key }}
 
   run-tests:
     runs-on: ubuntu-latest
