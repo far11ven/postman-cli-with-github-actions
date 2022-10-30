@@ -16,7 +16,12 @@ on:
         required: true   
         description: 'The token is pulled from GitHub repository secrets'
 
-jobs:     
+jobs:
+  installer:
+    uses: far11ven/postman-cli-with-github-actions/.github/workflows/reusable-workflow.yml@main
+    with:
+        postman-api-key: ${{ secrets.postman_api_key }}
+
   run-tests:
     runs-on: ubuntu-latest
     outputs:
@@ -25,12 +30,6 @@ jobs:
       - name: Checkout & Logging input details
         id: step1
         uses: actions/checkout@v3
-
-      - name: Install Postman CLI
-        id: step2
-        uses: far11ven/postman-cli-with-github-actions/.github/workflows/reusable-workflow.yml@main
-        with:
-            postman-api-key: ${{ secrets.postman_api_key }}
 
       - name: Run Test Collections
         id: step3
@@ -42,4 +41,10 @@ jobs:
             echo $SUBDOMAIN
             postman collection run postman_collection.json -g postman_globals.json -e env/QA/postman_environment.json
 
-      - run: echo "✔️ All tests were run with status ${{ job.status }}."
+  finally:
+    needs: run-tests
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          postman -v
+          echo "✔️ All tests were run with status ${{ job.status }}."
