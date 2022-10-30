@@ -13,10 +13,10 @@ on:
         description: 'The url against which test to be run'
 
 jobs:
-  install_postman_cli: 
+  install-postman-cli-with-reusable-workflow: 
         uses: far11ven/postman-cli-with-github-actions/.github/workflows/reusable-workflow.yml@main
-        with:
-          postman_api_key: ${{ secrets.postman_api_key }}
+        secrets:
+          postman-api-key: ${{ secrets.postman_api_key }}
 
   run-tests:
     runs-on: ubuntu-latest
