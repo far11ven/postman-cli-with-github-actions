@@ -36,9 +36,8 @@ jobs:
           echo "Logging.."
           echo ${{ steps.step2.outputs.stdout }}
           echo "${{ steps.step2.outputs.stdout }}"
-          echo $outputs.outputs1
           echo ${{ outputs.outputs1 }}
-          
+
 
       - name: Postman CLI Login
         id: step4
