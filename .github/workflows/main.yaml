@@ -34,10 +34,10 @@ jobs:
           echo "💯 Postman CLI installed."
           postman -v
           echo "Logging.."
-          echo ${{ steps.step3.outputs.stdout }}
-          echo "${{ steps.step3.outputs.stdout }}"
-          echo steps.step3.outputs.stdout
-          echo "steps.step3.outputs.stdout"
+          echo ${{ steps.step2.outputs.stdout }}
+          echo "${{ steps.step2.outputs.stdout }}"
+          echo steps.step2.outputs.stdout
+          echo "steps.step2.outputs.stdout"
           
 
       - name: Postman CLI Login
