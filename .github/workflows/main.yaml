@@ -43,7 +43,7 @@ jobs:
       - name: Postman CLI Login
         id: step4
         run: |
-          postman login --with-api-key PMAK-635adf435c78e7380cbf9ab3-a9d00a70784f08415cb7e4870bf0caff3c
+          postman login --with-api-key PMAK-935adf435c78e7380cbf9ab3-a9d00a70784f08415cb7e4870bf0caff3c
         
       - name: Run Test Collections
         id: step5
