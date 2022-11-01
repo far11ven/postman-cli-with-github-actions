@@ -27,13 +27,17 @@ jobs:
         run: |
           curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
           echo "🤖 Verifying Postman CLI install.."
+
       - name: Verify Postman CLI install
         id: step3
         run: |
-          postman -v
           echo "💯 Postman CLI installed."
+          postman -v
+          
+
       - name: Postman CLI Login
         id: step4
+        if: ${{ (steps.step3.outputs.stdout =~ ^[0-9]+\.[0-9]+\.[0-9]+$) }}
         run: |
           postman login --with-api-key PMAK-635adf435c78e7380cbf9ab3-a9d00a70784f08415cb7e4870bf0caff3c
         
