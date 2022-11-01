@@ -16,7 +16,7 @@ jobs:
   run-tests:
     runs-on: ubuntu-latest
     outputs:
-      output1: ${{ steps.step1.outputs.stdout }}
+      output1: ${{ steps.step2.outputs.stdout }}
     steps:
       - name: Checkout & Logging input details
         id: step1
@@ -36,8 +36,8 @@ jobs:
           echo "Logging.."
           echo ${{ steps.step2.outputs.stdout }}
           echo "${{ steps.step2.outputs.stdout }}"
-          echo steps.step2.outputs.stdout
-          echo "steps.step2.outputs.stdout"
+          echo $outputs.outputs1
+          echo ${{ outputs.outputs1 }}
           
 
       - name: Postman CLI Login
