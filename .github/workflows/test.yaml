@@ -1,4 +1,4 @@
-name: Testing reusable workflow
+name: run-on-ubuntu
 run-name: ${{ github.actor }} started the action 🚀
 on:
   workflow_dispatch:
@@ -11,28 +11,40 @@ on:
         required: true
         type: string
         description: 'The url against which test to be run'
-    secrets:
-      postman_api_key:
-        required: true   
-        description: 'The token is pulled from GitHub repository secrets'
-
+      
 jobs:
-  installer:
-    uses: far11ven/postman-cli-with-github-actions/.github/workflows/reusable-workflow.yml@main
-    with:
-        postman-api-key: ${{ secrets.postman_api_key }}
-
   run-tests:
     runs-on: ubuntu-latest
     outputs:
-      output1: ${{ steps.step1.outputs.stdout }}
+      output1: ${{ steps.step2.outputs.stdout }}
     steps:
       - name: Checkout & Logging input details
         id: step1
         uses: actions/checkout@v3
 
-      - name: Run Test Collections
+      - name: Install Postman CLI
+        id: step2
+        run: |
+          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+          echo "🤖 Verifying Postman CLI install.."
+
+      - name: Verify Postman CLI install
         id: step3
+        run: |
+          echo "💯 Postman CLI installed."
+          postman -v
+          echo "Logging.."
+          echo ${{ steps.step2.outputs.stdout }}
+          echo "${{ steps.step2.outputs.stdout }}"
+          echo ${{ outputs.outputs1 }}
+
+      - name: Postman CLI Login
+        id: step4
+        run: |
+          postman login --with-api-key PMAK-935adf435c78e7380cbf9ab3-a9d00a70784f08415cb7e4870bf0caff3c
+        
+      - name: Run Test Collections
+        id: step5
         env:
           DOMAIN: ${{ inputs.domain }}
           SUBDOMAIN: ${{ inputs.subdomain }}s
@@ -40,11 +52,4 @@ jobs:
             echo $DOMAIN
             echo $SUBDOMAIN
             postman collection run postman_collection.json -g postman_globals.json -e env/QA/postman_environment.json
-
-  finally:
-    needs: run-tests
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          postman -v
-          echo "✔️ All tests were run with status ${{ job.status }}."
+      - run: echo "✔️ All tests were run with status ${{ job.status }}."
